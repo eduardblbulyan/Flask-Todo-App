@@ -31,5 +31,17 @@ def index():
         tasks = Todo.query.order_by(Todo.date).all()
         return render_template('index.html', tasks=tasks)
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    task = Todo.query.get_or_404(id)
+    try:
+        db.session.delete(task)
+        db.session.commit()
+        return redirect("/")
+    except:
+        return "An error occured!"
+
+    
+
 if __name__ == "__main__":
     app.run()
